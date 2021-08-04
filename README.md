@@ -22,7 +22,7 @@ This project was developed in collaboration with Trey Stansfield (WKU) and the f
 * [GCC](https://gcc.gnu.org/install/) and [Make](https://www.gnu.org/software/make/) (required; check versions using ```gcc -v```, ```g++ -v``` and ```make -v```)
 * [MUSCLE](https://www.drive5.com/muscle/downloads.htm) (optional; required for clustering and sequence alignment)
   * also available through [Bioconda](https://bioconda.github.io/)
-* [wcdest](https://github.com/shaze/wcdest) (optional; required for sequence alignment)
+* [wcdest](https://github.com/shaze/wcdest) (optional; required for sequence alignment and generating consensus sequence)
 
 #### Building the Project
 
@@ -153,7 +153,7 @@ The options ```-T 5 -H 0``` are what worked best for our data; however, it is en
 
 ## wcdInterrogate
 
-This program is used to link cluster info generated from wcdest to the original sequence data so that it can be passed into the sequence alignment tool MUSCLE.
+This program is used to link cluster info generated from wcdest to the original sequence data. These clusters can be analyzed by frequency or passed into the sequence alignment tool MUSCLE.
 
 Options:
 ```
@@ -184,16 +184,23 @@ mkdir ./genome1/wintout/
 wcdInterrogate -w ./genome1/wcdout/genome1clusters.wcd -i ./genome1/sqout/subTelCut.fasta -s ./genome1/jfout/subTelSeq.fastq./genome1/jfout/subTelSeq.fastq -f fastq -o ./genome1/wintout/cluster.out -r ./genome1/wintout/mfacluster/ --indices --sort --size=8
 ```
 
+This will create a multifasta file for each cluster containing each sequence as it appeared in the raw read dataset. These multifasta files can then be passed into MUSCLE.
+
 ## MUSCLE
 
+[MUSCLE](https://www.drive5.com/muscle/) is a sequence alignment tool that can be used to align sequences and generate a consensus sequence for each cluster.
 
-
-
-
+Example:
+```
+muscle -in ./wcdInterrogate_out/B51_revc/mfacluster_c60_l40_t5/cluster#.fasta -out ./muscle_out/B51_revc/mfacluster_c60_l40_t5/cons#.fasta
+```
 
 ## Presentations and Usage
 
 [Kentucky Academy of Science 2020 Virtual Annual Meeting](https://www.memberleap.com/members/publication/program_issue.php?iid=790313) (use ctrl-f and search 'TeloReport')
 
 The program is currently being used by Trey Stansfield and the Farman Lab for continuing work in researching subtelomeric regions.
+
+## Conact
+
 If you would like to use this program and need assistance, you can contact me at sabaunach@gmail.com or seth.baunach@uky.edu
