@@ -184,11 +184,11 @@ bool process_options(int argc, char** argv,
 
 		po::options_description desc("Allowed options");
 		desc.add_options()
-		    ("help", "produce this message")
+		    ("help,h", "produce this message")
 		    ("separated,s", po::value<vector<string> >()->multitoken(), "specify input from separated paired-end read fastq files (r1 then r2).")
 		    ("interleaved,i", po::value<string>(&i_filename), "specify input from an interleaved paired-end read fastq file.")
-		    ("out,o", po::value<string>(&out_dirname)->default_value("telomericreadfinder_out"), "specify output directory. default: telomereFinder_out/")
-		    ("nRatio,n", po::value<double>(&nRatioThrow)->default_value(.05), "throw out reads with a ratio of N's greater than specified")
+		    ("out,o", po::value<string>(&out_dirname)->default_value("telomereFinder_out"), "specify output directory. default: telomereFinder_out/")
+		    ("nRatio,n", po::value<double>(&nRatioThrow)->default_value(.05), "throw out reads with a ratio of N's greater than specified. default: 0.05")
 		;
 
 		po::variables_map vm;

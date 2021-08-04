@@ -262,11 +262,8 @@ bool process_options(int argc, char** argv,
 			     << "            bit of telomeric sequence in the beginning (less than a full repeat.) However, if it is too sensitive, it may cut off due to a\n"
 			     << "            sequencing error instead.\n"
 			     << "Therefore, the second window should have a small window size (<=18) with a higher cutoff (>=1).\n"
-			     << "These values can be modified to achieve desired effects and sensitivity.\n\n\n\n"
-			     << "Recommended settings:\n\n\n"
-			     << "For accurately cutting very close to the last repeat sequence:\n\n"
-			     << " -w 60 -c .5 --shortWindowLen 15 --shortCutoff 1.4\n\n"
-			     << "This seems to work well in most cases. It can be slow with the default step length of 1, this can be increased with relatively minimal penalty.\n";
+			     << "These values can be modified to achieve desired effects and sensitivity.\n"
+			     << "Default settings seem to work well in most cases. It can be slow with the default step length of 1, this can be increased with relatively minimal penalty.\n";
 			return false;
 		}
 
