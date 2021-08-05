@@ -1,4 +1,4 @@
-# About TeloPort
+# TeloPort
 
 TeloPort / TeloReport is a collection of tools for extracting and clustering subtelomeric sequences from raw reads.
 
@@ -43,9 +43,9 @@ To compile the project, simply run the commmand ```make``` while in the main dir
 
 **IMPORTANT:**
 
-Unless you intend to make a mess, I recommend either adding the **build/apps** to your ```$PATH```, and/or creating a separate folder to store all of the output created by each program (there is a lot.)
+Unless you intend to make a mess, it is recommended to add the **build/apps** to your ```$PATH```, and/or create a separate folder to store all of the output created by each program.
 
-In a similar vein, remember that any files you create in the **build/** directory will be removed upon running ```make clean```. Don't lose any of your work!
+In a similar vein, remember that any files created in the **build/** directory will be removed upon running ```make```. Don't lose any of your work!
 
 ## telomereFinder
 
@@ -115,7 +115,7 @@ These settings will create a format more suitable for using with wcdest (after u
 
 ## sequenceQuality
 
-This program is used to deal with sequence quality and trim sequences to a specified length for downstream applications.
+This program is used to trim sequences to a specified length for downstream applications.
 
 Options:
 ```
@@ -188,14 +188,14 @@ This will create a multifasta file for each cluster containing each sequence as 
 
 ## MUSCLE
 
-[MUSCLE](https://www.drive5.com/muscle/) is a sequence alignment tool that can be used to align sequences and generate a consensus sequence for each cluster.
+[MUSCLE](https://www.drive5.com/muscle/) is a sequence alignment tool that is used to align sequences and generate a consensus sequence for each cluster.
 
 Example:
 ```
 muscle -in ./wcdInterrogate_out/B51_revc/mfacluster_c60_l40_t5/cluster#.fasta -out ./muscle_out/B51_revc/mfacluster_c60_l40_t5/cons#.fasta
 ```
 
-## Presentations and Usage
+## Presentations and Use
 
 [Kentucky Academy of Science 2020 Virtual Annual Meeting](https://www.memberleap.com/members/publication/program_issue.php?iid=790313) (use ctrl-f and search 'TeloReport')
 
