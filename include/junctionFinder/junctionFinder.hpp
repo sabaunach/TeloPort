@@ -14,8 +14,6 @@ namespace core = telomere_core;
 
 namespace junctionFinder {
 
-static unordered_map<bool, core::TelRepeatInfo> telRepeats = {{true, core::TelRepeatInfo("CCCTAA", true)},
-	{false, core::TelRepeatInfo("TTAGGG", false)}};
 static int windowLen; // window length for first pass
 static int stepLen; // step length for first pass
 static double cutoff; // cutoff for first pass

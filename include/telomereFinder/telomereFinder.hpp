@@ -14,9 +14,6 @@ namespace core = telomere_core;
 
 namespace telomereFinder {
 
-static unordered_map<bool, core::TelRepeatInfo> telRepeats = {{true, core::TelRepeatInfo("CCCTAA", true)},
-	{false, core::TelRepeatInfo("TTAGGG", false)}};
-
 /* Compare actual sequence to the sequence we would expect based on telRepeat and off.
  *   0 (fastest) : see if actual sequence exactly matches generated sequence
  *   1 (fast)    : precompute a match table s.t. for each substitution of a base with another base

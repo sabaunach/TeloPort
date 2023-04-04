@@ -30,6 +30,7 @@ bool o_opt_revc = false,
      o_opt_pretty = false,
      o_opt_fullMatches = false;
 int repeatsThrow = 4; // throw out reads with number of repeats in subTelSeq >= repeatsThrow
+unordered_map<bool, core::TelRepeatInfo> telRepeats;
 
 struct JunctionRead {
 	core::Read read;
@@ -125,8 +126,8 @@ bool read_jf(ifstream & f_in, ofstream * telSeq_out_f, ofstream * subTelSeq_out_
 
 		size_t forward_firstWindowStart, forward_secondWindowStart,
 		       reverse_firstWindowStart, reverse_secondWindowStart;
-		size_t forward_res = jf::findTelomereJunction_i(read.seq, jf::telRepeats[true], forward_firstWindowStart, forward_secondWindowStart);
-		size_t reverse_res = jf::findTelomereJunction_i(read.seq, jf::telRepeats[false], reverse_firstWindowStart, reverse_secondWindowStart);
+		size_t forward_res = jf::findTelomereJunction_i(read.seq, telRepeats[true], forward_firstWindowStart, forward_secondWindowStart);
+		size_t reverse_res = jf::findTelomereJunction_i(read.seq, telRepeats[false], reverse_firstWindowStart, reverse_secondWindowStart);
 		if (forward_res == numeric_limits<size_t>::max()
 		    || reverse_res == numeric_limits<size_t>::max()) {
 			// one matched whole telomere
@@ -180,7 +181,7 @@ bool read_jf(ifstream & f_in, ofstream * telSeq_out_f, ofstream * subTelSeq_out_
 		splitReads = core::splitRead(r.read, r.junc_loc);
 
 		if (r.isForward) {
-			int repFind = countTelRepeats(splitReads.second.seq, jf::telRepeats[true]);
+			int repFind = countTelRepeats(splitReads.second.seq, telRepeats[true]);
 			if (repeatsThrow == 0 || repFind < repeatsThrow) {
 				if (!o_opt_splitJunc) {
 					core::write_sequence_fastq(*telSeq_out_f, r.read);
@@ -193,7 +194,7 @@ bool read_jf(ifstream & f_in, ofstream * telSeq_out_f, ofstream * subTelSeq_out_
 				continue;
 			}
 		} else {
-			int repFind = countTelRepeats(splitReads.first.seq, jf::telRepeats[false]);
+			int repFind = countTelRepeats(splitReads.first.seq, telRepeats[false]);
 			if (repeatsThrow == 0 || repFind < repeatsThrow) {
 				if (!o_opt_splitJunc) {
 					core::write_sequence_fastq(*telSeq_out_r, r.read);
@@ -221,6 +222,7 @@ bool process_options(int argc, char** argv,
 	try {
 		string i_filename;
 		string out_dirname;
+        string tel_repeat;
 
 		po::options_description desc("Options");
 		desc.add_options()
@@ -241,6 +243,7 @@ bool process_options(int argc, char** argv,
 		    ("revc", po::value<bool>(&o_opt_revc)->default_value(false), "output reads in same orientation (by revc-ing revc reads)")
 		    ("fullMatches", po::value<bool>(&o_opt_fullMatches)->default_value(false), "include reads that are entirely telomeric sequence")
 		    ("pretty", po::value<bool>(&o_opt_pretty)->default_value(false), "print each cut with color to stdout")
+            ("telRepeat,t", po::value<string>(&tel_repeat)->default_value("CCCTAA"), "specify (forward) telomeric repeat")
 		;
 
 		po::variables_map vm;
@@ -304,6 +307,11 @@ bool process_options(int argc, char** argv,
 			cerr << "Error: on input: error opening file " << i_filename;
 			return false;
 		}
+
+        // TELOMERE REPEAT
+        telRepeats = {{true, core::TelRepeatInfo(tel_repeat, true)},
+                      {false, core::TelRepeatInfo(telomere_core::revc(telomere_core::Read("", tel_repeat)).seq, false)}};
+
 	} catch (exception& e) {
 		cerr << e.what() << "\n";
 		return false;

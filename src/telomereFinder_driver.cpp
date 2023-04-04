@@ -32,6 +32,7 @@ double nRatioThrow = .05; // throw out reads that have more than nRatioThrow N's
 int cutoff = 1;
 int mode = 1;
 int start = 18;
+unordered_map<bool, core::TelRepeatInfo> telRepeats;
 
 /* Writes statistical output to the log file
  */
@@ -91,10 +92,10 @@ bool read_tf(ifstream * r1_in, ifstream * r2_in, ofstream & telReads_out, ofstre
 		}
 
 		/* CHECK READS FOR TELOMERIC REPEATS AND WRITE TO FILES */
-		double r1_forward_res = tf::scoreTelomericRead(r1, tf::telRepeats[true], mode, start),
-		       r1_reverse_res = tf::scoreTelomericRead(r1, tf::telRepeats[false], mode, start),
-		       r2_forward_res = tf::scoreTelomericRead(r2, tf::telRepeats[true], mode, start),
-		       r2_reverse_res = tf::scoreTelomericRead(r2, tf::telRepeats[false], mode, start);
+		double r1_forward_res = tf::scoreTelomericRead(r1, telRepeats[true], mode, start),
+		       r1_reverse_res = tf::scoreTelomericRead(r1, telRepeats[false], mode, start),
+		       r2_forward_res = tf::scoreTelomericRead(r2, telRepeats[true], mode, start),
+		       r2_reverse_res = tf::scoreTelomericRead(r2, telRepeats[false], mode, start);
 		bool r1_forward_isTel = r1_forward_res < cutoff,
 		     r1_reverse_isTel = r1_reverse_res < cutoff,
 		     r2_forward_isTel = r2_forward_res < cutoff,
@@ -181,6 +182,7 @@ bool process_options(int argc, char** argv,
 		vector<string> s_filenames;
 		string i_filename;
 		string out_dirname;
+        string tel_repeat;
 
 		po::options_description desc("Allowed options");
 		desc.add_options()
@@ -189,6 +191,7 @@ bool process_options(int argc, char** argv,
 		    ("interleaved,i", po::value<string>(&i_filename), "specify input from an interleaved paired-end read fastq file.")
 		    ("out,o", po::value<string>(&out_dirname)->default_value("telomereFinder_out"), "specify output directory. default: telomereFinder_out/")
 		    ("nRatio,n", po::value<double>(&nRatioThrow)->default_value(.05), "throw out reads with a ratio of N's greater than specified. default: 0.05")
+            ("telRepeat,t", po::value<string>(&tel_repeat)->default_value("CCCTAA"), "specify (forward) telomeric repeat")
 		;
 
 		po::variables_map vm;
@@ -249,7 +252,11 @@ bool process_options(int argc, char** argv,
 			}
 		}
 
-	} catch (exception& e) {
+        // TELOMERE REPEAT
+        telRepeats = {{true, core::TelRepeatInfo(tel_repeat, true)},
+                      {false, core::TelRepeatInfo(telomere_core::revc(telomere_core::Read("", tel_repeat)).seq, false)}};
+
+    } catch (exception& e) {
 		cerr << e.what() << "\n";
 		return false;
 	} catch (...) {

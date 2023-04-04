@@ -19,7 +19,8 @@ This project was developed in collaboration with Trey Stansfield (WKU) and the f
 #### Requirements
 
 * [Boost](https://www.boost.org/) (required)
-* [GCC](https://gcc.gnu.org/install/) and [Make](https://www.gnu.org/software/make/) (required; check versions using ```gcc -v```, ```g++ -v``` and ```make -v```)
+  * installing the `libboost-all-dev` package should do it
+* [GCC](https://gcc.gnu.org/install/) and [Make](https://www.gnu.org/software/make/) (required; check versions using ```g++ -v``` and ```make -v```)
 * [MUSCLE](https://www.drive5.com/muscle/downloads.htm) (optional; required for clustering and sequence alignment)
   * also available through [Bioconda](https://bioconda.github.io/)
 * [wcdest](https://github.com/shaze/wcdest) (optional; required for sequence alignment and generating consensus sequence)
@@ -28,24 +29,13 @@ This project was developed in collaboration with Trey Stansfield (WKU) and the f
 
 To compile the project, simply run the commmand ```make``` while in the main directory. This will create the **build/** directory. All of the included programs are within the **build/apps** directory.
 
-<details>
- <summary>If you are working with a non-TTAGGG/CCCATT genome:</summary>
- 
- You will need to edit the files ./include/junctionFinder/junctionFinder.hpp and ./include/telomereFinder/telomereFinder.hpp. In both files:
- 
- * On line 17, change CCCTAA to the appropriate teolomere sequence.
- * On line 18, change TTAGGG to the appropriate (reverse complement) telomere sequence.
- 
- You will need to rebuild the program for these changes to take effect. If it is necessary, this kind of modification can be added as a feature later on; however, for our lab, we only dealt with genomes with the usual TTAGGG sequence.
-</details>
-
 # Using TeloPort
 
 **IMPORTANT:**
 
-Unless you intend to make a mess, it is recommended to add the **build/apps** to your ```$PATH```, and/or create a separate folder to store all of the output created by each program.
+It is recommended to add the **build/apps** to your ```$PATH```, and/or create a separate folder to store all of the output created by each program.
 
-In a similar vein, remember that any files created in the **build/** directory will be removed upon running ```make```. Don't lose any of your work!
+In a similar vein, remember that any files created in the **build/** directory will be removed upon running ```make```.
 
 ## telomereFinder
 
@@ -61,9 +51,9 @@ Options:
   -o [ --out ] arg (=telomereFinder_out)
                                         specify output directory. default:
                                         telomereFinder_out/
-  -n [ --nRatio ] arg (=0.05)
-                                        throw out reads with a ratio of N's
+  -n [ --nRatio ] arg (=0.05)           throw out reads with a ratio of N's
                                         greater than specified. default: 0.05
+  -t [ --telRepeat] arg (=CCCTAA)       specify (forward) telomeric repeat
 ```
 
 Examples:
@@ -104,6 +94,7 @@ Options:
   --fullMatches arg (=0)                include reads that are entirely
                                         telomeric sequence
   --pretty arg (=0)                     print each cut with color to stdout
+  -t [ --telRepeat] arg (=CCCTAA)       specify (forward) telomeric repeat
 ```
 
 Example:
@@ -195,12 +186,9 @@ Example:
 muscle -in ./wcdInterrogate_out/B51_revc/mfacluster_c60_l40_t5/cluster#.fasta -out ./muscle_out/B51_revc/mfacluster_c60_l40_t5/cons#.fasta
 ```
 
-## Presentations and Use
+## Presentations and Usage
 
-[Kentucky Academy of Science 2020 Virtual Annual Meeting](https://www.memberleap.com/members/publication/program_issue.php?iid=790313) (use ctrl-f and search 'TeloReport')
+[Kentucky Academy of Science 2020 Virtual Annual Meeting](https://mms.kyscience.org/members/publication/program_issue.php?iid=790313) (use ctrl-f and search 'TeloReport')
 
 The program is currently being used by Trey Stansfield and the Farman Lab for continuing work in researching subtelomeric regions.
 
-## Conact
-
-If you would like to use this program and need assistance, you can contact me at sabaunach@gmail.com or seth.baunach@uky.edu
