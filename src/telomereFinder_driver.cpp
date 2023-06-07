@@ -216,7 +216,7 @@ bool process_options(int argc, char** argv,
 			return false;
 		}
 		if (!fs::exists(p)) {
-			create_directory(p);
+			create_directories(p);
 		}
 		telReads_out = ofstream(out_dirname + "/" + "telReads.fastq");
 		pairReads_out = ofstream(out_dirname + "/" + "pairReads.fastq");
