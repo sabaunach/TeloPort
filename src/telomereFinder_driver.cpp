@@ -27,7 +27,7 @@ namespace sq = sequenceQuality;
 
 ofstream log_stats;
 ofstream log_details;
-int seqReadOutputBreak = 10000;
+int seqReadOutputBreak = 1000000;
 double nRatioThrow = .05; // throw out reads that have more than nRatioThrow N's
 int cutoff = 1;
 int mode = 1;
@@ -79,7 +79,7 @@ bool read_tf(ifstream * r1_in, ifstream * r2_in, ofstream & telReads_out, ofstre
 	    telR2revnotR1for = 0;     // reverse telomeric read in R2 and no forward in R1
 	while (true) {
 		if (seqsread % seqReadOutputBreak == 0) {
-			cout << seqsread << " sequences read: " << totalTelomeres << " telomeres found\n";
+			cout << seqsread << " sequences read: " << totalTelomeres << " potential telomeres found" << endl;
 		}
 		core::read_sequence_fastq(*r1_in, r1);
 		core::read_sequence_fastq(*r2_in, r2);
