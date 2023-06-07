@@ -138,7 +138,7 @@ bool read_jf(ifstream & f_in, ofstream * telSeq_out_f, ofstream * subTelSeq_out_
 				} else {
 					juncReads.push_back(JunctionRead(read, false, 0, 0, 0));
 				}
-			}
+			} else continue;
 
 		} else if (reverse_res == 0 && forward_res == 0) {
 			// no match
